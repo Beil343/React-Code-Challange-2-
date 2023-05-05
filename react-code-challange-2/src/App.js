@@ -1,22 +1,26 @@
+
 import React, { useState } from 'react';
-import './App.css';
 import BotCollection from './components/BotCollection';
 import YourBotArmy from './components/YourBotArmy';
-
-function App() {
+import "./index.css";
+const App = () => {
   const [army, setArmy] = useState([]);
-
+  const handleEnlist = (bot) => {
+    if (!army.some((b) => b.id === bot.id)) {
+      setArmy([...army, bot]);
+    }
+  };
+  const handleRelease = (bot) => {
+    const updatedArmy = army.filter((b) => b.id !== bot.id);
+    setArmy(updatedArmy);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Bot Battlr</h1>
-      </header>
-      <main>
-        <BotCollection army={army} setArmy={setArmy} />
-        <YourBotArmy army={army} setArmy={setArmy} />
-      </main>
+    <div className="app-container">
+      <BotCollection army={army} setArmy={setArmy} onEnlist={handleEnlist}  />
+      <div className='army-container'>
+      <YourBotArmy army={army} setArmy={setArmy} onRelease={handleRelease} />
+      </div>
     </div>
   );
-}
-
+};
 export default App;
